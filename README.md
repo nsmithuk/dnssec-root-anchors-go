@@ -11,29 +11,29 @@ To use `dns-anchors-go` in your Go project, follow the example below:
 package main
 
 import (
-	"os"
-	"github.com/nsmithuk/dns-anchors-go/anchors"
-	"fmt"
+    "os"
+    "github.com/nsmithuk/dns-anchors-go/anchors"
+    "fmt"
 )
 
 func main() {
-	// Open the root-anchors.xml file
-	xmlFile, err := os.Open("root-anchors.xml")
-	if err != nil {
-		panic(err)
-	}
-	defer xmlFile.Close()
-
-	// Get valid (not expired) DS records
-	dsRecords, err := anchors.GetValid(xmlFile)
-	if err != nil {
-		panic(err)
-	}
-
-	// Print the DS records
-	for _, record := range dsRecords {
-		fmt.Println(record)
-	}
+    // Open the root-anchors.xml file
+    xmlFile, err := os.Open("root-anchors.xml")
+    if err != nil {
+        panic(err)
+    }
+    defer xmlFile.Close()
+    
+    // Get valid (not expired) DS records
+    dsRecords, err := anchors.GetValid(xmlFile)
+    if err != nil {
+        panic(err)
+    }
+    
+    // Print the DS records
+    for _, record := range dsRecords {
+        fmt.Println(record)
+    }
 }
 ```
 
