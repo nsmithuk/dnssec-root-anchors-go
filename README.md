@@ -24,7 +24,7 @@ func main() {
 	}
 	defer xmlFile.Close()
 
-	// Validate and get DS records
+	// Get valid (not expired) DS records
 	dsRecords, err := anchors.GetValid(xmlFile)
 	if err != nil {
 		panic(err)
