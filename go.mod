@@ -1,4 +1,4 @@
-module dns-anchors-go
+module github.com/nsmithuk/dns-anchors-go
 
 go 1.22
 
