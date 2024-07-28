@@ -4,8 +4,59 @@ import (
 	"encoding/xml"
 	"github.com/miekg/dns"
 	"io"
+	"os"
 	"time"
 )
+
+// GetAllFromFile returns all DS records from the file path.
+func GetAllFromFile(path string) ([]*dns.DS, error) {
+	xmlFile, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer xmlFile.Close()
+	return GetAllFromReader(xmlFile)
+}
+
+// GetValidFromFile returns only currently valid DS records from the file path..
+func GetValidFromFile(path string) ([]*dns.DS, error) {
+	xmlFile, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer xmlFile.Close()
+	return GetValidFromReader(xmlFile)
+}
+
+// GetAllFromEmbedded returns all DS records from the embedded copy of the XML.
+func GetAllFromEmbedded() []*dns.DS {
+	records, err := GetAllFromReader(EmbeddedAnchors())
+	if err != nil {
+		panic(err)
+	}
+	return records
+}
+
+// GetValidFromEmbedded returns only currently valid DS records from the embedded copy of the XML.
+func GetValidFromEmbedded() []*dns.DS {
+	records, err := GetValidFromReader(EmbeddedAnchors())
+	if err != nil {
+		panic(err)
+	}
+	return records
+}
+
+// GetAllFromReader returns all DS records from the Reader.
+func GetAllFromReader(r io.Reader) ([]*dns.DS, error) {
+	return get(r, false)
+}
+
+// GetValidFromReader returns only currently valid DS records from the Reader.
+func GetValidFromReader(r io.Reader) ([]*dns.DS, error) {
+	return get(r, true)
+}
+
+//---
 
 // TrustAnchor represents the root XML element.
 type TrustAnchor struct {
@@ -25,16 +76,6 @@ type KeyDigest struct {
 	Algorithm  uint8     `xml:"Algorithm"`
 	DigestType uint8     `xml:"DigestType"`
 	Digest     string    `xml:"Digest"`
-}
-
-// GetAll returns all DS records from the XML.
-func GetAll(r io.Reader) ([]*dns.DS, error) {
-	return get(r, false)
-}
-
-// GetValid returns only currently valid DS records from the XML.
-func GetValid(r io.Reader) ([]*dns.DS, error) {
-	return get(r, true)
 }
 
 // get parses the XML data and returns DS records.
