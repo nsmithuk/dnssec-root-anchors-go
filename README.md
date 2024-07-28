@@ -12,20 +12,19 @@ This repository includes two copies of the root anchors - one embedded in a Go c
 package main
 
 import (
-	"github.com/nsmithuk/dns-anchors-go/anchors"
-	"fmt"
+    "github.com/nsmithuk/dns-anchors-go/anchors"
+    "fmt"
 )
 
 func main() {
-	// Get valid (not expired) DS records from the embedded XML
-	dsRecords := anchors.GetValidFromEmbedded()
-
-	// Print the DS records
-	for _, record := range dsRecords {
-		fmt.Println(record)
-	}
+    // Get valid (not expired) DS records from the embedded XML
+    dsRecords := anchors.GetValidFromEmbedded()
+    
+    // Print the DS records
+    for _, record := range dsRecords {
+        fmt.Println(record)
+    }
 }
-
 ```
 
 ### Using a File Path
@@ -33,21 +32,21 @@ func main() {
 package main
 
 import (
-	"github.com/nsmithuk/dns-anchors-go/anchors"
-	"fmt"
+    "github.com/nsmithuk/dns-anchors-go/anchors"
+    "fmt"
 )
 
 func main() {
-	// Get valid (not expired) DS records from the specified file
-	dsRecords, err := anchors.GetValidFromFile("root-anchors.xml")
-	if err != nil {
-		panic(err)
-	}
-
-	// Print the DS records
-	for _, record := range dsRecords {
-		fmt.Println(record)
-	}
+    // Get valid (not expired) DS records from the specified file
+    dsRecords, err := anchors.GetValidFromFile("root-anchors.xml")
+    if err != nil {
+        panic(err)
+    }
+    
+    // Print the DS records
+    for _, record := range dsRecords {
+        fmt.Println(record)
+    }
 }
 ```
 
@@ -56,29 +55,29 @@ func main() {
 package main
 
 import (
-	"os"
-	"github.com/nsmithuk/dns-anchors-go/anchors"
-	"fmt"
+    "os"
+    "github.com/nsmithuk/dns-anchors-go/anchors"
+    "fmt"
 )
 
 func main() {
-	// Open the root-anchors.xml file
-	xmlFile, err := os.Open("root-anchors.xml")
-	if err != nil {
-		panic(err)
-	}
-	defer xmlFile.Close()
-
-	// Get valid (not expired) DS records
-	dsRecords, err := anchors.GetValidFromReader(xmlFile)
-	if err != nil {
-		panic(err)
-	}
-
-	// Print the DS records
-	for _, record := range dsRecords {
-		fmt.Println(record)
-	}
+    // Open the root-anchors.xml file
+    xmlFile, err := os.Open("root-anchors.xml")
+    if err != nil {
+        panic(err)
+    }
+    defer xmlFile.Close()
+    
+    // Get valid (not expired) DS records
+    dsRecords, err := anchors.GetValidFromReader(xmlFile)
+    if err != nil {
+        panic(err)
+    }
+    
+    // Print the DS records
+    for _, record := range dsRecords {
+        fmt.Println(record)
+    }
 }
 ```
 If you want all records, not just valid ones, there is: `GetAllFromFile()`, `GetAllFromEmbedded()` and `GetAllFromReader()`.
