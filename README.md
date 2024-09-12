@@ -1,9 +1,9 @@
-# dns-anchors-go
+# DNSSEC Trust Anchor Reader
 
-The `dns-anchors-go` library is designed to convert the `root-anchors.xml` file, available from [IANA DNSSEC files](https://www.iana.org/dnssec/files), into `miekg/dns` DS records. The root DS records are required to perform full validation of the DNSSEC chain.
+Reads the DNSSEC trust anchors from `root-anchors.xml`, available from [IANA DNSSEC files](https://www.iana.org/dnssec/files), into `miekg/dns` DS records.
 
 > [!CAUTION]
-> This repository includes an embedded copy of the root anchors in a Go constant. Feel free to use it for convenience, 
+> This repository includes an embedded copy of the root anchors as a constant. Feel free to use it for convenience, 
 > however if you're serious about performing your own validation you need to acquire and validate the file independently 
 > to ensure trust in its content. Use the included copy at your own risk.
 
