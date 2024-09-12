@@ -4,55 +4,34 @@ import (
 	"encoding/xml"
 	"github.com/miekg/dns"
 	"io"
-	"os"
 	"time"
 )
 
-// GetAllFromFile returns all DS records from the file path.
-func GetAllFromFile(path string) ([]*dns.DS, error) {
-	xmlFile, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer xmlFile.Close()
-	return GetAllFromReader(xmlFile)
-}
-
-// GetValidFromFile returns only currently valid DS records from the file path..
-func GetValidFromFile(path string) ([]*dns.DS, error) {
-	xmlFile, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer xmlFile.Close()
-	return GetValidFromReader(xmlFile)
-}
-
-// GetAllFromEmbedded returns all DS records from the embedded copy of the XML.
-func GetAllFromEmbedded() []*dns.DS {
-	records, err := GetAllFromReader(EmbeddedAnchors())
+// GetAll returns all DS records from the embedded copy of the XML.
+func GetAll() []*dns.DS {
+	records, err := ReadAll(embeddedReader())
 	if err != nil {
 		panic(err)
 	}
 	return records
 }
 
-// GetValidFromEmbedded returns only currently valid DS records from the embedded copy of the XML.
-func GetValidFromEmbedded() []*dns.DS {
-	records, err := GetValidFromReader(EmbeddedAnchors())
+// GetValid returns only currently valid DS records from the embedded copy of the XML.
+func GetValid() []*dns.DS {
+	records, err := ReadValid(embeddedReader())
 	if err != nil {
 		panic(err)
 	}
 	return records
 }
 
-// GetAllFromReader returns all DS records from the Reader.
-func GetAllFromReader(r io.Reader) ([]*dns.DS, error) {
+// ReadAll returns all DS records from the Reader.
+func ReadAll(r io.Reader) ([]*dns.DS, error) {
 	return get(r, false)
 }
 
-// GetValidFromReader returns only currently valid DS records from the Reader.
-func GetValidFromReader(r io.Reader) ([]*dns.DS, error) {
+// ReadValid returns only currently valid DS records from the Reader.
+func ReadValid(r io.Reader) ([]*dns.DS, error) {
 	return get(r, true)
 }
 
@@ -92,7 +71,7 @@ func get(r io.Reader, validNow bool) ([]*dns.DS, error) {
 		return nil, err
 	}
 
-	answers := make([]*dns.DS, 0)
+	answers := make([]*dns.DS, 0, 2)
 	for _, kd := range trustAnchor.KeyDigests {
 		if validNow {
 			now := time.Now()

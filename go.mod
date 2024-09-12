@@ -1,8 +1,8 @@
-module github.com/nsmithuk/dns-anchors-go
+module github.com/nsmithuk/dnssec-root-anchors-go
 
 go 1.22
 
-require github.com/miekg/dns v1.1.61
+require github.com/miekg/dns v1.1.62
 
 require (
 	golang.org/x/mod v0.18.0 // indirect
